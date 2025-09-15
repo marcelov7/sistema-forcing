@@ -1,5 +1,5 @@
 # Use PHP 8.2 official image
-FROM php:8.2-apache
+FROM php:8.2-apachl ender 
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
@@ -50,20 +50,26 @@ else\n\
     echo "APP_ENV=production" >> /var/www/.env\n\
     echo "APP_DEBUG=true" >> /var/www/.env\n\
     echo "APP_KEY=" >> /var/www/.env\n\
-    echo "DB_CONNECTION=sqlite" >> /var/www/.env\n\
-    echo "DB_DATABASE=/var/www/database/database.sqlite" >> /var/www/.env\n\
+    echo "DB_CONNECTION=${DB_CONNECTION:-mysql}" >> /var/www/.env\n\
+    echo "DB_HOST=${DB_HOST:-31.97.168.137}" >> /var/www/.env\n\
+    echo "DB_PORT=${DB_PORT:-3306}" >> /var/www/.env\n\
+    echo "DB_DATABASE=${DB_DATABASE:-forcingdb}" >> /var/www/.env\n\
+    echo "DB_USERNAME=${DB_USERNAME:-renderuser}" >> /var/www/.env\n\
+    echo "DB_PASSWORD=${DB_PASSWORD:-Render123!@#Forcing}" >> /var/www/.env\n\
 fi\n\
 \n\
-# Create database directory and file\n\
-mkdir -p /var/www/database\n\
-touch /var/www/database/database.sqlite\n\
-chown -R www-data:www-data /var/www/database\n\
+# Set permissions\n\
 chown www-data:www-data /var/www/.env\n\
+chmod 755 /var/www/storage /var/www/bootstrap/cache\n\
 \n\
 # Generate key and run basic setup\n\
 cd /var/www\n\
 php artisan key:generate --force || echo "Key generation failed"\n\
 php artisan migrate --force || echo "Migration failed"\n\
+php artisan storage:link || echo "Storage link failed"\n\
+php artisan config:cache || echo "Config cache failed"\n\
+php artisan route:cache || echo "Route cache failed"\n\
+php artisan view:cache || echo "View cache failed"\n\
 \n\
 echo "=== STARTING SERVER ==="\n\
 php artisan serve --host=0.0.0.0 --port=8080' > /var/www/start.sh && chmod +x /var/www/start.sh
