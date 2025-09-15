@@ -1,16 +1,18 @@
 services:
   - type: web
-    name: forcing-sistema
+    name: sistema-forcing
     runtime: docker
     plan: free
     dockerfilePath: ./Dockerfile
     envVars:
+      - key: APP_NAME
+        value: Sistema Forcing
       - key: APP_ENV
         value: production
       - key: APP_DEBUG
         value: false
       - key: APP_URL
-        value: https://forcing-sistema.onrender.com
+        value: https://sistema-forcing.onrender.com
       - key: DB_CONNECTION
         value: mysql
       - key: DB_HOST
@@ -38,4 +40,10 @@ services:
       - key: MAIL_FROM_ADDRESS
         value: sistema@devaxis.com.br
       - key: MAIL_FROM_NAME
-        value: "Sistema de Forcing - Devaxis"
+        value: "Sistema Forcing - Devaxis"
+      - key: CACHE_DRIVER
+        value: file
+      - key: SESSION_DRIVER
+        value: file
+      - key: QUEUE_CONNECTION
+        value: sync
