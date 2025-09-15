@@ -33,19 +33,26 @@ COPY --chown=www-data:www-data . /var/www
 # Install PHP dependencies
 RUN composer install --no-dev --optimize-autoloader
 
-# Generate application key
-RUN php artisan key:generate --force
-
-# Cache configuration
-RUN php artisan config:cache && \
-    php artisan route:cache && \
-    php artisan view:cache
-
 # Change current user to www
 USER www-data
 
 # Expose port 8080
 EXPOSE 8080
 
-# Start PHP built-in server
-CMD php artisan serve --host=0.0.0.0 --port=8080
+# Create startup script
+RUN echo '#!/bin/bash\n\
+# Generate key if not exists\n\
+if [ -z "$APP_KEY" ]; then\n\
+    php artisan key:generate --force\n\
+fi\n\
+# Run migrations\n\
+php artisan migrate --force\n\
+# Cache configuration\n\
+php artisan config:cache\n\
+php artisan route:cache\n\
+php artisan view:cache\n\
+# Start server\n\
+php artisan serve --host=0.0.0.0 --port=8080' > /var/www/start.sh && chmod +x /var/www/start.sh
+
+# Start with our script
+CMD ["/bin/bash", "/var/www/start.sh"]
