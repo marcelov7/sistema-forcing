@@ -35,10 +35,30 @@ RUN composer install --no-dev --optimize-autoloader
 
 # Create startup script (before changing user)
 RUN echo '#!/bin/bash\n\
-# Generate key if not exists\n\
-if [ -z "$APP_KEY" ]; then\n\
-    php artisan key:generate --force\n\
-fi\n\
+# Create .env from environment variables\n\
+echo "APP_NAME=${APP_NAME:-Laravel}" > .env\n\
+echo "APP_ENV=${APP_ENV:-production}" >> .env\n\
+echo "APP_DEBUG=${APP_DEBUG:-false}" >> .env\n\
+echo "APP_URL=${APP_URL:-http://localhost}" >> .env\n\
+echo "DB_CONNECTION=${DB_CONNECTION:-sqlite}" >> .env\n\
+echo "DB_HOST=${DB_HOST:-127.0.0.1}" >> .env\n\
+echo "DB_PORT=${DB_PORT:-3306}" >> .env\n\
+echo "DB_DATABASE=${DB_DATABASE:-database}" >> .env\n\
+echo "DB_USERNAME=${DB_USERNAME:-root}" >> .env\n\
+echo "DB_PASSWORD=${DB_PASSWORD:-}" >> .env\n\
+echo "MAIL_MAILER=${MAIL_MAILER:-smtp}" >> .env\n\
+echo "MAIL_HOST=${MAIL_HOST:-localhost}" >> .env\n\
+echo "MAIL_PORT=${MAIL_PORT:-587}" >> .env\n\
+echo "MAIL_USERNAME=${MAIL_USERNAME:-}" >> .env\n\
+echo "MAIL_PASSWORD=${MAIL_PASSWORD:-}" >> .env\n\
+echo "MAIL_ENCRYPTION=${MAIL_ENCRYPTION:-tls}" >> .env\n\
+echo "MAIL_FROM_ADDRESS=${MAIL_FROM_ADDRESS:-hello@example.com}" >> .env\n\
+echo "MAIL_FROM_NAME=${MAIL_FROM_NAME:-Example}" >> .env\n\
+echo "CACHE_DRIVER=${CACHE_DRIVER:-file}" >> .env\n\
+echo "SESSION_DRIVER=${SESSION_DRIVER:-file}" >> .env\n\
+echo "QUEUE_CONNECTION=${QUEUE_CONNECTION:-sync}" >> .env\n\
+# Generate key\n\
+php artisan key:generate --force\n\
 # Run migrations\n\
 php artisan migrate --force\n\
 # Cache configuration\n\
