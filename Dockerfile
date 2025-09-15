@@ -33,13 +33,7 @@ COPY --chown=www-data:www-data . /var/www
 # Install PHP dependencies
 RUN composer install --no-dev --optimize-autoloader
 
-# Change current user to www
-USER www-data
-
-# Expose port 8080
-EXPOSE 8080
-
-# Create startup script
+# Create startup script (before changing user)
 RUN echo '#!/bin/bash\n\
 # Generate key if not exists\n\
 if [ -z "$APP_KEY" ]; then\n\
@@ -53,6 +47,15 @@ php artisan route:cache\n\
 php artisan view:cache\n\
 # Start server\n\
 php artisan serve --host=0.0.0.0 --port=8080' > /var/www/start.sh && chmod +x /var/www/start.sh
+
+# Change ownership of startup script
+RUN chown www-data:www-data /var/www/start.sh
+
+# Change current user to www
+USER www-data
+
+# Expose port 8080
+EXPOSE 8080
 
 # Start with our script
 CMD ["/bin/bash", "/var/www/start.sh"]
