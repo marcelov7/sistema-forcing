@@ -1,0 +1,35 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "public/index.php",
+      "use": "@vercel/php@0.7.1"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "public/index.php"
+    }
+  ],
+  "env": {
+    "APP_ENV": "production",
+    "APP_DEBUG": "false",
+    "APP_KEY": "",
+    "APP_URL": "https://sistema-forcing.vercel.app",
+    "DB_CONNECTION": "mysql",
+    "DB_HOST": "31.97.168.137",
+    "DB_PORT": "3306",
+    "DB_DATABASE": "forcingdb",
+    "DB_USERNAME": "renderuser",
+    "DB_PASSWORD": "Render123!@#Forcing",
+    "MAIL_MAILER": "smtp",
+    "MAIL_HOST": "smtp.hostinger.com",
+    "MAIL_PORT": "465",
+    "MAIL_USERNAME": "sistema@devaxis.com.br",
+    "MAIL_PASSWORD": "M@rcelo189@3033",
+    "MAIL_ENCRYPTION": "ssl",
+    "MAIL_FROM_ADDRESS": "sistema@devaxis.com.br",
+    "MAIL_FROM_NAME": "Sistema Forcing - Devaxis"
+  }
+}
