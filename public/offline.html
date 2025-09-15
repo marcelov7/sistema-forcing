@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema Offline - Forcing Control</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-align: center;
+        }
+        
+        .offline-container {
+            max-width: 500px;
+            padding: 40px 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+        
+        .offline-icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+            opacity: 0.8;
+        }
+        
+        .offline-title {
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+        
+        .offline-message {
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+        
+        .retry-button {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .retry-button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .status-indicator {
+            margin-top: 20px;
+            font-size: 14px;
+            opacity: 0.7;
+        }
+        
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+        
+        .connection-status {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 8px 16px;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .status-offline {
+            color: #ff6b6b;
+        }
+        
+        .status-online {
+            color: #51cf66;
+        }
+    </style>
+</head>
+<body>
+    <div class="connection-status status-offline" id="connectionStatus">
+        <i class="fas fa-wifi"></i> Offline
+    </div>
+    
+    <div class="offline-container">
+        <div class="offline-icon pulse">
+            📡
+        </div>
+        
+        <h1 class="offline-title">Sistema Offline</h1>
+        
+        <p class="offline-message">
+            Não foi possível conectar ao servidor. Verifique sua conexão com a internet e tente novamente.
+        </p>
+        
+        <a href="/" class="retry-button" onclick="retryConnection()">
+            🔄 Tentar Novamente
+        </a>
+        
+        <div class="status-indicator" id="statusIndicator">
+            Verificando conexão...
+        </div>
+    </div>
+
+    <script>
+        let connectionCheckInterval;
+        
+        function updateConnectionStatus() {
+            const statusElement = document.getElementById('connectionStatus');
+            const indicatorElement = document.getElementById('statusIndicator');
+            
+            if (navigator.onLine) {
+                statusElement.innerHTML = '<i class="fas fa-wifi"></i> Online';
+                statusElement.className = 'connection-status status-online';
+                indicatorElement.textContent = 'Conexão restaurada! Redirecionando...';
+                
+                // Redireciona após 2 segundos
+                setTimeout(() => {
+                    window.location.href = '/';
+                }, 2000);
+                
+                clearInterval(connectionCheckInterval);
+            } else {
+                statusElement.innerHTML = '<i class="fas fa-wifi"></i> Offline';
+                statusElement.className = 'connection-status status-offline';
+                indicatorElement.textContent = 'Ainda sem conexão...';
+            }
+        }
+        
+        function retryConnection() {
+            const indicatorElement = document.getElementById('statusIndicator');
+            indicatorElement.textContent = 'Verificando conexão...';
+            
+            // Tenta carregar uma página simples para testar a conexão
+            fetch('/', { 
+                method: 'HEAD',
+                cache: 'no-cache'
+            })
+            .then(() => {
+                indicatorElement.textContent = 'Conexão restaurada! Redirecionando...';
+                setTimeout(() => {
+                    window.location.href = '/';
+                }, 1000);
+            })
+            .catch(() => {
+                indicatorElement.textContent = 'Ainda sem conexão. Tente novamente.';
+            });
+        }
+        
+        // Verifica conexão a cada 3 segundos
+        connectionCheckInterval = setInterval(updateConnectionStatus, 3000);
+        
+        // Listener para mudanças de status de conexão
+        window.addEventListener('online', updateConnectionStatus);
+        window.addEventListener('offline', updateConnectionStatus);
+        
+        // Verificação inicial
+        updateConnectionStatus();
+        
+        // Auto-retry após 30 segundos
+        setTimeout(() => {
+            if (!navigator.onLine) {
+                retryConnection();
+            }
+        }, 30000);
+    </script>
+</body>
+</html>

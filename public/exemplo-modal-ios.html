@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Exemplo Modal iOS Fix</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/modal-fix-ios.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1>Teste de Modal para iOS</h1>
+        
+        <!-- Botão que abre modal normalmente -->
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exemploModal">
+            Abrir Modal Normal
+        </button>
+        
+        <!-- Botão que usa função segura -->
+        <button type="button" class="btn btn-success" onclick="openModalSafe('exemploModal')">
+            Abrir Modal Seguro (iOS)
+        </button>
+    </div>
+
+    <!-- Modal Example -->
+    <div class="modal fade" id="exemploModal" tabindex="-1" data-bs-backdrop="static">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Exemplo de Modal</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="exemploForm">
+                        <div class="mb-3">
+                            <label for="nomeInput" class="form-label">Nome:</label>
+                            <input type="text" class="form-control" id="nomeInput" name="nome" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="emailInput" class="form-label">Email:</label>
+                            <input type="email" class="form-control" id="emailInput" name="email" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="statusSelect" class="form-label">Status:</label>
+                            <select class="form-control" id="statusSelect" name="status">
+                                <option value="ativo">Ativo</option>
+                                <option value="inativo">Inativo</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="observacoes" class="form-label">Observações:</label>
+                            <textarea class="form-control" id="observacoes" name="observacoes" rows="3"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary" form="exemploForm">Salvar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/modal-fix-ios-v2.js"></script>
+    
+    <script>
+        // Exemplo de uso das funções
+        document.getElementById('exemploForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Simular loading
+            const submitBtn = this.querySelector('button[type="submit"]');
+            submitBtn.classList.add('loading');
+            submitBtn.textContent = 'Salvando...';
+            
+            setTimeout(() => {
+                alert('Dados salvos com sucesso!');
+                closeModalSafe('exemploModal');
+                
+                // Restaurar botão
+                submitBtn.classList.remove('loading');
+                submitBtn.textContent = 'Salvar';
+            }, 2000);
+        });
+        
+        // Log para debug
+        console.log('Exemplo carregado. Funções disponíveis:');
+        console.log('- openModalSafe(modalId)');
+        console.log('- closeModalSafe(modalId)');
+    </script>
+</body>
+</html> 

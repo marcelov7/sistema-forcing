@@ -1,0 +1,396 @@
+/*
+ * 🎨 Sistema de Acessibilidade para Daltonicos - VERSÃO FINAL
+ * Sistema de Forcing - Devaxis
+ * Implementação Completa - 25/07/2025
+ */
+
+/* ===== PALETAS DE CORES SEGURAS ===== */
+:root {
+    /* Cores originais do Bootstrap */
+    --bs-primary: #007bff;
+    --bs-secondary: #6c757d;
+    --bs-success: #28a745;
+    --bs-warning: #ffc107;
+    --bs-danger: #dc3545;
+    --bs-info: #17a2b8;
+    
+    /* Paleta segura para daltonicos */
+    --colorblind-blue: #0077be;
+    --colorblind-orange: #ff8c00;
+    --colorblind-green: #228b22;
+    --colorblind-red: #dc143c;
+    --colorblind-purple: #8a2be2;
+    --colorblind-brown: #8b4513;
+    --colorblind-pink: #ff69b4;
+    --colorblind-cyan: #00bcd4;
+    
+    /* Alto contraste */
+    --high-contrast-bg: #000000;
+    --high-contrast-text: #ffffff;
+    --high-contrast-border: #ffffff;
+    
+    /* Gradientes para padrões */
+    --pattern-striped: repeating-linear-gradient(45deg, transparent, transparent 3px, rgba(255,255,255,0.4) 3px, rgba(255,255,255,0.4) 6px);
+    --pattern-dotted: radial-gradient(circle, rgba(255,255,255,0.6) 1px, transparent 1px);
+    --pattern-diagonal: repeating-linear-gradient(-45deg, transparent, transparent 4px, rgba(255,255,255,0.5) 4px, rgba(255,255,255,0.5) 8px);
+    --pattern-wavy: repeating-linear-gradient(90deg, transparent, transparent 6px, rgba(255,255,255,0.3) 6px, rgba(255,255,255,0.3) 12px);
+}
+
+/* ===== MODO DALTONICO ===== */
+.colorblind-mode {
+    --bs-primary: var(--colorblind-blue);
+    --bs-success: var(--colorblind-green);
+    --bs-warning: var(--colorblind-orange);
+    --bs-danger: var(--colorblind-red);
+    --bs-info: var(--colorblind-cyan);
+}
+
+/* ===== ALTO CONTRASTE ===== */
+.high-contrast-mode {
+    background-color: var(--high-contrast-bg) !important;
+    color: var(--high-contrast-text) !important;
+}
+
+.high-contrast-mode *:not(.btn):not(.badge) {
+    background-color: var(--high-contrast-bg) !important;
+    color: var(--high-contrast-text) !important;
+    border-color: var(--high-contrast-border) !important;
+}
+
+/* ===== BADGES ACESSÍVEIS ===== */
+.badge.colorblind-enhanced {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-weight: 600;
+    border: 2px solid currentColor;
+    position: relative;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.85rem;
+    line-height: 1;
+}
+
+.badge .status-icon {
+    font-size: 1em;
+    line-height: 1;
+    margin: 0;
+}
+
+/* Status específicos para badges */
+.badge.status-aguardando_liberacao {
+    background-color: var(--colorblind-orange);
+    color: white;
+    border-color: #cc7400;
+}
+
+.badge.status-liberado {
+    background-color: var(--colorblind-green);
+    color: white;
+    border-color: #1e7d1e;
+}
+
+.badge.status-executado {
+    background-color: var(--colorblind-blue);
+    color: white;
+    border-color: #0056b3;
+}
+
+.badge.status-solicitacao_retirada {
+    background-color: var(--colorblind-purple);
+    color: white;
+    border-color: #6a1b9a;
+}
+
+.badge.status-retirado {
+    background-color: var(--colorblind-cyan);
+    color: white;
+    border-color: #00838f;
+}
+
+/* ===== CARDS DE FORCING ===== */
+.forcing-card.colorblind-enhanced {
+    border-width: 3px;
+    border-style: solid;
+    position: relative;
+    transition: all 0.3s ease;
+    margin-bottom: 1.5rem;
+}
+
+.forcing-card.colorblind-enhanced:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Cores das bordas por status */
+.forcing-card.status-aguardando_liberacao {
+    border-color: var(--colorblind-orange);
+    background-color: rgba(255, 140, 0, 0.05);
+}
+
+.forcing-card.status-liberado {
+    border-color: var(--colorblind-green);
+    background-color: rgba(34, 139, 34, 0.05);
+}
+
+.forcing-card.status-executado {
+    border-color: var(--colorblind-blue);
+    background-color: rgba(0, 119, 190, 0.05);
+}
+
+.forcing-card.status-solicitacao_retirada {
+    border-color: var(--colorblind-purple);
+    background-color: rgba(138, 43, 226, 0.05);
+}
+
+.forcing-card.status-retirado {
+    border-color: var(--colorblind-cyan);
+    background-color: rgba(0, 188, 212, 0.05);
+}
+
+/* ===== CONTROLES DE ACESSIBILIDADE ===== */
+.accessibility-controls {
+    z-index: 1050;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 1rem;
+    padding: 0.75rem;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.accessibility-controls .btn {
+    margin: 0.25rem;
+    border: 2px solid currentColor;
+    font-size: 1.4rem;
+    width: 3rem;
+    height: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.75rem;
+    transition: all 0.2s ease;
+    background: white;
+}
+
+.accessibility-controls .btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.accessibility-controls .btn:active {
+    transform: scale(0.95);
+}
+
+.accessibility-controls .btn.active {
+    background-color: var(--colorblind-blue);
+    color: white;
+    border-color: var(--colorblind-blue);
+}
+
+/* ===== RESPONSIVIDADE ===== */
+@media (max-width: 768px) {
+    .accessibility-controls {
+        position: fixed !important;
+        top: auto !important;
+        bottom: 1rem !important;
+        right: 1rem !important;
+        left: auto !important;
+        flex-direction: column;
+    }
+    
+    .forcing-card.colorblind-enhanced {
+        margin-bottom: 1rem;
+    }
+    
+    /* Ajustes para o botão de daltonismo em mobile */
+    #colorblind-toggle-btn {
+        z-index: 1040 !important; /* Menor que modais (1055) */
+        bottom: 80px !important; /* Mais espaço para não conflitar */
+        transition: opacity 0.3s ease, visibility 0.3s ease !important;
+    }
+    
+    /* Esconder botão quando modal estiver aberta */
+    .modal-open #colorblind-toggle-btn {
+        opacity: 0 !important;
+        visibility: hidden !important;
+        pointer-events: none !important;
+    }
+}
+/* ===== ACESSIBILIDADE DE FOCO ===== */
+.colorblind-enhanced:focus,
+.accessibility-controls .btn:focus {
+    outline: 3px solid var(--colorblind-cyan);
+    outline-offset: 2px;
+}
+
+/* ===== UTILIDADES ===== */
+.text-colorblind-blue { color: var(--colorblind-blue) !important; }
+.text-colorblind-green { color: var(--colorblind-green) !important; }
+.text-colorblind-orange { color: var(--colorblind-orange) !important; }
+.text-colorblind-red { color: var(--colorblind-red) !important; }
+.text-colorblind-purple { color: var(--colorblind-purple) !important; }
+.text-colorblind-cyan { color: var(--colorblind-cyan) !important; }
+
+.bg-colorblind-blue { background-color: var(--colorblind-blue) !important; }
+.bg-colorblind-green { background-color: var(--colorblind-green) !important; }
+.bg-colorblind-orange { background-color: var(--colorblind-orange) !important; }
+.bg-colorblind-red { background-color: var(--colorblind-red) !important; }
+.bg-colorblind-purple { background-color: var(--colorblind-purple) !important; }
+.bg-colorblind-cyan { background-color: var(--colorblind-cyan) !important; }
+
+/* ===== ESTADO ATIVO ===== */
+.accessibility-active {
+    animation: accessibility-glow 2s ease-in-out infinite alternate;
+}
+
+/* Animation for accessibility features */
+@keyframes accessibility-glow {
+    from {
+        box-shadow: 0 0 5px var(--colorblind-cyan);
+    }
+    to {
+        box-shadow: 0 0 20px var(--colorblind-cyan), 0 0 30px var(--colorblind-cyan);
+    }
+}
+
+/* Toggle para modo daltonico */
+.colorblind-toggle {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+    background: white;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 10px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.colorblind-toggle label {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 600;
+    color: #374151;
+}
+
+/* Dark mode compatibility para daltonicos */
+@media (prefers-color-scheme: dark) {
+    .colorblind-mode {
+        --color-primary: #3b82f6;
+        --color-success: #10b981;
+        --color-warning: #f59e0b;
+        --color-danger: #f87171;
+        --color-info: #06b6d4;
+    }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+    .colorblind-mode .forcing-status-card {
+        border-left-width: 12px;
+    }
+    
+    .colorblind-mode .badge {
+        border-width: 3px;
+    }
+    
+    .colorblind-mode .btn {
+        border-width: 3px;
+    }
+}
+
+/* ===== CORREÇÕES ESPECÍFICAS PARA iOS/SAFARI ===== */
+@supports (-webkit-touch-callout: none) {
+    /* Detecta Safari/iOS */
+    #colorblind-toggle-btn {
+        -webkit-transform: translateZ(0) !important;
+        transform: translateZ(0) !important;
+        -webkit-backface-visibility: hidden !important;
+        backface-visibility: hidden !important;
+        will-change: transform !important;
+    }
+    
+    /* Modais em iOS - forçar z-index mais alto */
+    .modal {
+        z-index: 1060 !important;
+        -webkit-transform: translateZ(0) !important;
+        transform: translateZ(0) !important;
+    }
+    
+    .modal-backdrop {
+        z-index: 1055 !important;
+    }
+    
+    /* Garantir que o botão de daltonismo fique abaixo das modais em iOS */
+    .modal-open #colorblind-toggle-btn {
+        z-index: 999 !important;
+        opacity: 0.3 !important;
+        visibility: visible !important;
+        pointer-events: none !important;
+        -webkit-user-select: none !important;
+        user-select: none !important;
+    }
+}
+
+/* ===== CORREÇÕES PARA WEBKIT (SAFARI/CHROME MOBILE) ===== */
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
+    .modal-content {
+        -webkit-overflow-scrolling: touch !important;
+        transform: translate3d(0, 0, 0) !important;
+    }
+    
+    .modal-body {
+        -webkit-overflow-scrolling: touch !important;
+    }
+    
+    /* Prevenir zoom em inputs em iOS */
+    .modal input[type="text"],
+    .modal input[type="email"],
+    .modal input[type="password"],
+    .modal textarea,
+    .modal select {
+        font-size: 16px !important;
+        -webkit-appearance: none !important;
+        border-radius: 4px !important;
+    }
+}
+
+/* ===== ESPECÍFICO PARA IPHONE/DISPOSITIVOS TOUCH ===== */
+@media screen and (max-device-width: 768px) and (-webkit-min-device-pixel-ratio: 2) {
+    /* iPhone e dispositivos de alta densidade */
+    #colorblind-toggle-btn {
+        font-size: 15px !important;
+        padding: 14px 22px !important;
+        bottom: 90px !important;
+        right: 15px !important;
+        border-radius: 30px !important;
+        box-shadow: 0 6px 20px rgba(0,123,255,0.4) !important;
+    }
+    
+    .modal-dialog {
+        margin: 10px !important;
+        max-width: calc(100vw - 20px) !important;
+    }
+    
+    .modal-content {
+        border-radius: 12px !important;
+        border: none !important;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.2) !important;
+    }
+    
+    .modal-header {
+        padding: 20px 20px 10px 20px !important;
+        border-bottom: 1px solid #eee !important;
+    }
+    
+    .modal-body {
+        padding: 20px !important;
+        max-height: 60vh !important;
+        overflow-y: auto !important;
+    }
+    
+    .modal-footer {
+        padding: 10px 20px 20px 20px !important;
+        border-top: 1px solid #eee !important;
+    }
+}

@@ -1,0 +1,29 @@
+/* VERSÃO DE TESTE - SEM BOTÃO DALTONISMO */
+/* Para testar se o conflito está no botão daltonismo */
+
+/* APENAS modal - sem interferências */
+.modal {
+    z-index: 50000 !important;
+}
+
+.modal-backdrop {
+    z-index: 49999 !important;
+}
+
+/* Responsivo básico */
+@media screen and (max-width: 768px) {
+    .modal-dialog {
+        margin: 10px;
+        width: calc(100% - 20px);
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .modal-dialog {
+        margin: 5px;
+        width: calc(100% - 10px);
+    }
+}
+
+/* ZERO referências ao botão daltonismo */
+/* Deixar tudo funcionar normalmente */ 

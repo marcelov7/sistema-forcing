@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>TESTE FINAL - SOLUÇÃO COMPLETA</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/colorblind-accessibility.css" rel="stylesheet">
+    <link href="css/modal-fix-final.css" rel="stylesheet">
+    <style>
+        .test-status {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            background: rgba(0,0,0,0.9);
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 14px;
+            max-width: 350px;
+            z-index: 60000;
+            font-family: monospace;
+        }
+        
+        .test-counter {
+            background: #007bff;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 12px;
+            margin-left: 10px;
+        }
+        
+        .status-item {
+            margin: 5px 0;
+            padding: 5px;
+            border-radius: 3px;
+        }
+        
+        .status-ok { background: rgba(40, 167, 69, 0.3); }
+        .status-error { background: rgba(220, 53, 69, 0.3); }
+        .status-warning { background: rgba(255, 193, 7, 0.3); }
+        
+        .test-area {
+            margin-top: 80px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Status de Teste -->
+    <div class="test-status">
+        <div><strong>🎯 TESTE FINAL COMPLETO</strong></div>
+        <div id="device-info">📱 Detectando dispositivo...</div>
+        <div id="modal-status">🔴 Modal: Fechada</div>
+        <div id="daltonismo-status">👁️ Daltonismo: Ativo</div>
+        <div id="test-count">🧪 Testes: 0</div>
+    </div>
+
+    <div class="container test-area">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h1 class="display-4">🎯 TESTE FINAL</h1>
+                <h2 class="text-muted">Solução Completa com Daltonismo Controlado</h2>
+                
+                <div class="alert alert-info mt-4">
+                    <h5>✅ O que foi corrigido:</h5>
+                    <ul class="text-start">
+                        <li><strong>Botão Daltonismo:</strong> Conflito identificado e controlado</li>
+                        <li><strong>Limpeza de Estado:</strong> Reset completo entre aberturas</li>
+                        <li><strong>Z-index:</strong> Hierarquia definitiva</li>
+                        <li><strong>Múltiplas Aberturas:</strong> Funcionamento consistente</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row mt-4">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <h5>🔘 Testes de Modal</h5>
+                    </div>
+                    <div class="card-body">
+                        <p>Teste múltiplas aberturas e fechamentos:</p>
+                        
+                        <button class="btn btn-success btn-lg w-100 mb-3" data-bs-toggle="modal" data-bs-target="#testeModal">
+                            🚀 MODAL TESTE #1
+                        </button>
+                        
+                        <button class="btn btn-warning btn-lg w-100 mb-3" onclick="openModalSafe('testeModal2')">
+                            🔧 MODAL TESTE #2 (Safe)
+                        </button>
+                        
+                        <button class="btn btn-info btn-lg w-100" onclick="testarMultiplas()">
+                            🔄 TESTE MÚLTIPLAS ABERTURAS
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header bg-secondary text-white">
+                        <h5>👁️ Controle Daltonismo</h5>
+                    </div>
+                    <div class="card-body">
+                        <p>O botão daltonismo deve:</p>
+                        <ul>
+                            <li>✅ Aparecer quando modal fechada</li>
+                            <li>✅ Sumir quando modal aberta</li>
+                            <li>✅ Reaparecer quando modal fechada</li>
+                            <li>✅ Funcionar normalmente</li>
+                        </ul>
+                        
+                        <div id="test-results" class="mt-3"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 1 -->
+    <div class="modal fade" id="testeModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-success text-white">
+                    <h5 class="modal-title">🧪 Modal Teste #1</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-warning">
+                        <strong>📱 iPhone:</strong> Todos os botões devem funcionar perfeitamente!
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-6">
+                            <button class="btn btn-primary w-100 mb-2" onclick="registrarTeste('Botão Modal 1 - Azul')">
+                                🔵 Teste Azul
+                            </button>
+                        </div>
+                        <div class="col-6">
+                            <button class="btn btn-danger w-100 mb-2" onclick="registrarTeste('Botão Modal 1 - Vermelho')">
+                                🔴 Teste Vermelho
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <form onsubmit="return testarFormulario(event, 'Modal 1')">
+                        <div class="mb-3">
+                            <input type="text" class="form-control form-control-lg" placeholder="Digite algo..." required>
+                        </div>
+                        <button type="submit" class="btn btn-success w-100">
+                            ✅ Enviar Formulário Modal 1
+                        </button>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">❌ Fechar</button>
+                    <button type="button" class="btn btn-warning" onclick="openModalSafe('testeModal2')">
+                        🔄 Abrir Modal 2
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 2 -->
+    <div class="modal fade" id="testeModal2" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-warning text-dark">
+                    <h5 class="modal-title">🔧 Modal Teste #2</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Esta é a segunda modal para testar múltiplas aberturas.</p>
+                    
+                    <button class="btn btn-info w-100 mb-2" onclick="registrarTeste('Botão Modal 2')">
+                        🔧 Teste Modal 2
+                    </button>
+                    
+                    <div class="alert alert-info">
+                        <strong>🔄 Teste:</strong> Abra e feche múltiplas vezes para verificar se continua funcionando.
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">❌ Fechar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/colorblind-simple.js"></script>
+    <script src="js/modal-fix-final.js"></script>
+    
+    <script>
+        // Contadores e status
+        let testCount = 0;
+        let modalOpenCount = 0;
+        
+        // Detectar dispositivo
+        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+        const isMobile = window.innerWidth <= 768;
+        
+        document.getElementById('device-info').textContent = 
+            `📱 ${isIOS ? 'iPhone' : isMobile ? 'Mobile' : 'Desktop'}`;
+        
+        // Função para registrar teste
+        function registrarTeste(acao) {
+            testCount++;
+            document.getElementById('test-count').textContent = `🧪 Testes: ${testCount}`;
+            
+            const resultDiv = document.createElement('div');
+            resultDiv.className = 'status-item status-ok';
+            resultDiv.innerHTML = `<small>#${testCount}: ${acao} ✅</small>`;
+            
+            const container = document.getElementById('test-results');
+            container.appendChild(resultDiv);
+            
+            // Manter apenas últimos 5 resultados
+            while (container.children.length > 5) {
+                container.removeChild(container.firstChild);
+            }
+            
+            console.log(`✅ TESTE #${testCount}: ${acao}`);
+        }
+        
+        // Função para testar formulário
+        function testarFormulario(e, modalName) {
+            e.preventDefault();
+            registrarTeste(`Formulário ${modalName} enviado`);
+            
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+            const originalText = submitBtn.textContent;
+            submitBtn.textContent = '⏳ Enviando...';
+            submitBtn.disabled = true;
+            
+            setTimeout(() => {
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+                registrarTeste(`${modalName} processado com sucesso`);
+            }, 1000);
+            
+            return false;
+        }
+        
+        // Função para testar múltiplas aberturas
+        function testarMultiplas() {
+            registrarTeste('Iniciando teste múltiplas aberturas');
+            
+            let count = 0;
+            const interval = setInterval(() => {
+                count++;
+                
+                if (count % 2 === 1) {
+                    openModalSafe('testeModal');
+                    registrarTeste(`Abertura automática #${Math.ceil(count/2)}`);
+                } else {
+                    closeModalSafe('testeModal');
+                    registrarTeste(`Fechamento automático #${count/2}`);
+                }
+                
+                if (count >= 6) {
+                    clearInterval(interval);
+                    registrarTeste('Teste múltiplas aberturas concluído');
+                }
+            }, 1500);
+        }
+        
+        // Monitor status do daltonismo
+        function checkDaltonismoStatus() {
+            const daltonismoBtn = document.getElementById('colorblind-toggle-btn');
+            if (daltonismoBtn) {
+                const isVisible = daltonismoBtn.style.opacity !== '0' && 
+                                 daltonismoBtn.style.visibility !== 'hidden' &&
+                                 window.getComputedStyle(daltonismoBtn).opacity !== '0';
+                
+                document.getElementById('daltonismo-status').textContent = 
+                    `👁️ Daltonismo: ${isVisible ? 'Visível' : 'Oculto'}`;
+            }
+        }
+        
+        // Event listeners para modal
+        document.addEventListener('show.bs.modal', function(e) {
+            modalOpenCount++;
+            document.getElementById('modal-status').textContent = `🟡 Modal: Abrindo (${modalOpenCount}x)`;
+            setTimeout(checkDaltonismoStatus, 100);
+        });
+        
+        document.addEventListener('shown.bs.modal', function(e) {
+            document.getElementById('modal-status').textContent = `🟢 Modal: Aberta (${e.target.id})`;
+            checkDaltonismoStatus();
+            registrarTeste(`Modal ${e.target.id} aberta`);
+        });
+        
+        document.addEventListener('hide.bs.modal', function(e) {
+            document.getElementById('modal-status').textContent = `🟡 Modal: Fechando`;
+            setTimeout(checkDaltonismoStatus, 100);
+        });
+        
+        document.addEventListener('hidden.bs.modal', function(e) {
+            document.getElementById('modal-status').textContent = `🔴 Modal: Fechada`;
+            setTimeout(checkDaltonismoStatus, 200);
+            registrarTeste(`Modal ${e.target.id} fechada`);
+        });
+        
+        // Inicialização
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(() => {
+                checkDaltonismoStatus();
+                registrarTeste('Sistema carregado com daltonismo controlado');
+                
+                if (isIOS) {
+                    registrarTeste('iPhone detectado - aplicando fixes');
+                }
+            }, 1000);
+            
+            // Verificar daltonismo periodicamente
+            setInterval(checkDaltonismoStatus, 2000);
+        });
+    </script>
+</body>
+</html> 

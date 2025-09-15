@@ -1,0 +1,102 @@
+/* MODAL FIX FINAL - CSS com daltonismo controlado */
+
+/* Z-INDEX DEFINITIVO */
+.modal {
+    z-index: 50000 !important;
+}
+
+.modal-backdrop {
+    z-index: 49999 !important;
+}
+
+/* CONTROLE SEGURO DO BOTÃO DALTONISMO */
+#colorblind-toggle-btn {
+    z-index: 1050;
+    transition: all 0.3s ease;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+}
+
+/* Esconder daltonismo quando modal aberta - MÉTODO SEGURO */
+body.modal-open #colorblind-toggle-btn {
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+    z-index: 999 !important;
+    transform: scale(0.8) !important;
+}
+
+/* Reset completo quando modal fechada */
+body:not(.modal-open) #colorblind-toggle-btn {
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+    z-index: 1050 !important;
+    transform: scale(1) !important;
+}
+
+/* Mobile responsivo */
+@media screen and (max-width: 768px) {
+    .modal-dialog {
+        margin: 10px;
+        width: calc(100% - 20px);
+    }
+    
+    .modal-content {
+        border-radius: 10px;
+    }
+    
+    /* Daltonismo menor em mobile */
+    #colorblind-toggle-btn {
+        bottom: 15px;
+        right: 15px;
+        padding: 8px 12px;
+        font-size: 12px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .modal-dialog {
+        margin: 5px;
+        width: calc(100% - 10px);
+    }
+    
+    #colorblind-toggle-btn {
+        bottom: 10px;
+        right: 10px;
+        padding: 6px 10px;
+        font-size: 11px;
+    }
+}
+
+/* Animações suaves */
+.modal.fade .modal-dialog {
+    transition: transform 0.3s ease-out;
+}
+
+.modal.show .modal-dialog {
+    transform: none;
+}
+
+/* Estados de limpeza */
+.modal-cleaning {
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
+
+.modal-ready {
+    opacity: 1 !important;
+    pointer-events: auto !important;
+}
+
+/* Garantir que backdrop órfão seja removido */
+.modal-backdrop.orphan {
+    display: none !important;
+}
+
+/* Prevenção de scroll body */
+body.modal-open {
+    overflow: hidden !important;
+    padding-right: 0 !important;
+} 

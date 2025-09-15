@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Modal iOS Fix V3 - Teste Completo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="css/colorblind-accessibility.css" rel="stylesheet">
+    <link href="css/modal-fix-ios.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Simulação do botão daltonismo -->
+    <button id="colorblind-toggle-btn" class="btn btn-outline-secondary" 
+            style="position: fixed; bottom: 20px; right: 20px; border-radius: 50%; width: 60px; height: 60px; z-index: 1050;">
+        <i class="fas fa-eye"></i>
+    </button>
+
+    <div class="container mt-5">
+        <h1>Teste Modal iOS Fix V3</h1>
+        <p class="lead">Teste completo da solução para conflito entre modal e botão daltonismo</p>
+        
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Testes de Modal</h5>
+                    </div>
+                    <div class="card-body">
+                        <button type="button" class="btn btn-primary mb-2" data-bs-toggle="modal" data-bs-target="#testeModal">
+                            <i class="fas fa-plus"></i> Modal Bootstrap Normal
+                        </button>
+                        
+                        <button type="button" class="btn btn-success mb-2" onclick="openModalSafe('testeModal')">
+                            <i class="fas fa-shield-alt"></i> Modal Segura (iOS)
+                        </button>
+                        
+                        <button type="button" class="btn btn-warning mb-2" onclick="testarBotaoDaltonismo()">
+                            <i class="fas fa-eye"></i> Testar Botão Daltonismo
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Debug Console</h5>
+                    </div>
+                    <div class="card-body">
+                        <div id="debug-console" style="height: 200px; overflow-y: auto; background: #f8f9fa; padding: 10px; font-family: monospace; font-size: 12px;">
+                            <div class="text-success">Console de debug iniciado...</div>
+                        </div>
+                        <button class="btn btn-secondary btn-sm mt-2" onclick="limparConsole()">
+                            <i class="fas fa-trash"></i> Limpar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="alert alert-info">
+                    <h6><i class="fas fa-info-circle"></i> Como testar:</h6>
+                    <ol>
+                        <li>Abra uma modal e observe que o botão daltonismo desaparece</li>
+                        <li>Feche a modal e veja que o botão daltonismo reaparece</li>
+                        <li>Teste os botões dentro da modal (devem funcionar perfeitamente)</li>
+                        <li>Observe o console de debug para acompanhar o comportamento</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Teste -->
+    <div class="modal fade" id="testeModal" tabindex="-1" data-bs-backdrop="static">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="fas fa-cog"></i> Modal de Teste - iOS Fix V3
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="testeForm">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="nomeInput" class="form-label">Nome:</label>
+                                    <input type="text" class="form-control" id="nomeInput" name="nome" 
+                                           placeholder="Digite seu nome" required>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="emailInput" class="form-label">Email:</label>
+                                    <input type="email" class="form-control" id="emailInput" name="email" 
+                                           placeholder="seu@email.com" required>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="statusSelect" class="form-label">Status:</label>
+                                    <select class="form-control" id="statusSelect" name="status">
+                                        <option value="">Selecione...</option>
+                                        <option value="ativo">Ativo</option>
+                                        <option value="inativo">Inativo</option>
+                                        <option value="pendente">Pendente</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="prioridade" class="form-label">Prioridade:</label>
+                                    <select class="form-control" id="prioridade" name="prioridade">
+                                        <option value="baixa">Baixa</option>
+                                        <option value="media">Média</option>
+                                        <option value="alta">Alta</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="observacoes" class="form-label">Observações:</label>
+                            <textarea class="form-control" id="observacoes" name="observacoes" rows="3" 
+                                      placeholder="Digite suas observações aqui..."></textarea>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="termos" name="termos" required>
+                                <label class="form-check-label" for="termos">
+                                    Aceito os termos e condições
+                                </label>
+                            </div>
+                        </div>
+                    </form>
+                    
+                    <div class="alert alert-warning">
+                        <small>
+                            <i class="fas fa-mobile-alt"></i> 
+                            <strong>Teste iOS:</strong> Os botões devem funcionar perfeitamente no iPhone. 
+                            O botão daltonismo deve estar invisível enquanto esta modal estiver aberta.
+                        </small>
+                    </div>
+                </div>
+                
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="fas fa-times"></i> Cancelar
+                    </button>
+                    <button type="button" class="btn btn-info" onclick="testarBotaoModal(this)">
+                        <i class="fas fa-flask"></i> Testar Botão
+                    </button>
+                    <button type="submit" class="btn btn-primary" form="testeForm">
+                        <i class="fas fa-save"></i> Salvar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/colorblind-simple.js"></script>
+    <script src="js/modal-fix-ios-v3.js"></script>
+    
+    <script>
+        // Debug console
+        function log(message, type = 'info') {
+            const console = document.getElementById('debug-console');
+            const time = new Date().toLocaleTimeString();
+            const colors = {
+                info: 'text-primary',
+                success: 'text-success',
+                warning: 'text-warning',
+                error: 'text-danger'
+            };
+            
+            console.innerHTML += `<div class="${colors[type]}">[${time}] ${message}</div>`;
+            console.scrollTop = console.scrollHeight;
+        }
+        
+        function limparConsole() {
+            document.getElementById('debug-console').innerHTML = 
+                '<div class="text-success">Console limpo...</div>';
+        }
+        
+        // Teste do botão daltonismo
+        function testarBotaoDaltonismo() {
+            const btn = document.getElementById('colorblind-toggle-btn');
+            if (btn) {
+                const isVisible = btn.style.opacity !== '0' && btn.style.visibility !== 'hidden';
+                log(`Botão daltonismo ${isVisible ? 'VISÍVEL' : 'OCULTO'} - Z-index: ${btn.style.zIndex}`, 
+                    isVisible ? 'success' : 'warning');
+            } else {
+                log('Botão daltonismo não encontrado!', 'error');
+            }
+        }
+        
+        // Teste de botão dentro da modal
+        function testarBotaoModal(button) {
+            button.classList.add('loading');
+            button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Testando...';
+            
+            log('Botão da modal clicado - funcionando perfeitamente!', 'success');
+            
+            setTimeout(() => {
+                button.classList.remove('loading');
+                button.innerHTML = '<i class="fas fa-flask"></i> Testar Botão';
+                log('Teste do botão concluído', 'info');
+            }, 2000);
+        }
+        
+        // Form submit
+        document.getElementById('testeForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            log('Formulário submetido!', 'success');
+            
+            const submitBtn = this.querySelector('button[type="submit"]');
+            submitBtn.classList.add('loading');
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Salvando...';
+            
+            setTimeout(() => {
+                log('Dados salvos com sucesso!', 'success');
+                closeModalSafe('testeModal');
+                
+                submitBtn.classList.remove('loading');
+                submitBtn.innerHTML = '<i class="fas fa-save"></i> Salvar';
+                
+                // Reset form
+                this.reset();
+            }, 2000);
+        });
+        
+        // Monitor eventos de modal
+        document.addEventListener('show.bs.modal', function(e) {
+            log(`Modal "${e.target.id}" abrindo...`, 'info');
+        });
+        
+        document.addEventListener('shown.bs.modal', function(e) {
+            log(`Modal "${e.target.id}" aberta - Botão daltonismo deve estar oculto`, 'success');
+            setTimeout(testarBotaoDaltonismo, 100);
+        });
+        
+        document.addEventListener('hide.bs.modal', function(e) {
+            log(`Modal "${e.target.id}" fechando...`, 'info');
+        });
+        
+        document.addEventListener('hidden.bs.modal', function(e) {
+            log(`Modal "${e.target.id}" fechada - Botão daltonismo deve estar visível`, 'success');
+            setTimeout(testarBotaoDaltonismo, 100);
+        });
+        
+        // Log inicial
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(() => {
+                log('Modal iOS Fix V3 carregado e funcionando!', 'success');
+                log('Dispositivo: ' + (navigator.userAgent.includes('iPhone') ? 'iPhone' : 
+                     navigator.userAgent.includes('iPad') ? 'iPad' : 'Outros'), 'info');
+                testarBotaoDaltonismo();
+            }, 1000);
+        });
+    </script>
+</body>
+</html> 

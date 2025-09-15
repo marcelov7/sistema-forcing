@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste de Acessibilidade - Sistema de Forcing</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- CSS de Acessibilidade -->
+    <link href="css/colorblind-accessibility.css" rel="stylesheet">
+    
+    <style>
+        body {
+            padding: 20px;
+        }
+        .test-card {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎨 Teste do Sistema de Acessibilidade para Daltonismo</h1>
+        <p class="lead">Esta página testa se o toggle de acessibilidade está funcionando corretamente.</p>
+        
+        <div class="alert alert-info">
+            <strong>Instruções:</strong> 
+            <br>• Procure um botão/toggle no canto superior direito da tela
+            <br>• Ou pressione <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>A</kbd>
+            <br>• O modo daltonismo deve ativar/desativar
+        </div>
+        
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card test-card forcing-status-card" data-status="ativo">
+                    <div class="card-body">
+                        <h5 class="card-title">Sistema A - Forçado</h5>
+                        <span class="badge badge-danger">Ativo</span>
+                        <p>Este card deve mudar de aparência quando o modo daltonismo for ativado.</p>
+                        <button class="btn btn-danger">Retirar Forcing</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6">
+                <div class="card test-card forcing-status-card" data-status="retirado">
+                    <div class="card-body">
+                        <h5 class="card-title">Sistema B - Retirado</h5>
+                        <span class="badge badge-success">Retirado</span>
+                        <p>Este card também deve mudar de aparência.</p>
+                        <button class="btn btn-success">Forcing Ativo</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="alert alert-warning">
+            <strong>Aviso de Teste:</strong> Este alerta deve ganhar ícones quando o modo daltonismo estiver ativo.
+        </div>
+        
+        <div class="alert alert-success">
+            <strong>Sucesso de Teste:</strong> Este alerta também deve ganhar ícones.
+        </div>
+        
+        <div class="alert alert-danger">
+            <strong>Erro de Teste:</strong> E este alerta deve mostrar ícones de erro.
+        </div>
+        
+        <h3>Debug Information</h3>
+        <div class="card">
+            <div class="card-body">
+                <h5>Status do Sistema:</h5>
+                <ul id="debug-info">
+                    <li>Aguardando carregamento do JavaScript...</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- JavaScript de Acessibilidade -->
+    <script src="js/colorblind-accessibility.js"></script>
+    
+    <script>
+        // Debug script para verificar se tudo está funcionando
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🚀 Página carregada, iniciando debug...');
+            
+            const debugInfo = document.getElementById('debug-info');
+            
+            setTimeout(() => {
+                console.log('🔍 Executando verificações de debug...');
+                const status = [];
+                
+                // Verificar se o objeto foi criado
+                if (window.colorblindAccessibility) {
+                    status.push('✅ ColorblindAccessibility carregado com sucesso');
+                    status.push(`📋 Modo atual: ${window.colorblindAccessibility.isColorblindModeEnabled() ? 'Ativo' : 'Inativo'}`);
+                    console.log('✅ ColorblindAccessibility encontrado');
+                } else {
+                    status.push('❌ ColorblindAccessibility NÃO foi carregado');
+                    console.error('❌ ColorblindAccessibility não encontrado');
+                }
+                
+                // Verificar se o toggle existe
+                const toggle = document.querySelector('#colorblind-toggle');
+                if (toggle) {
+                    status.push('✅ Toggle encontrado no DOM');
+                    console.log('✅ Toggle encontrado:', toggle);
+                } else {
+                    status.push('❌ Toggle NÃO encontrado no DOM');
+                    console.error('❌ Toggle não encontrado');
+                }
+                
+                // Verificar se o container do toggle existe
+                const container = document.querySelector('#colorblind-toggle-container');
+                if (container) {
+                    status.push('✅ Container do toggle encontrado');
+                    console.log('✅ Container encontrado:', container);
+                } else {
+                    status.push('❌ Container do toggle NÃO encontrado');
+                    console.error('❌ Container não encontrado');
+                }
+                
+                // Verificar CSS
+                const cssLink = document.querySelector('link[href*="colorblind-accessibility.css"]');
+                if (cssLink) {
+                    status.push('✅ CSS de acessibilidade carregado');
+                    console.log('✅ CSS encontrado:', cssLink.href);
+                } else {
+                    status.push('❌ CSS de acessibilidade NÃO carregado');
+                    console.error('❌ CSS não encontrado');
+                }
+                
+                // Verificar JavaScript
+                const jsScript = document.querySelector('script[src*="colorblind-accessibility.js"]');
+                if (jsScript) {
+                    status.push('✅ JavaScript de acessibilidade carregado');
+                    console.log('✅ JS encontrado:', jsScript.src);
+                } else {
+                    status.push('❌ JavaScript de acessibilidade NÃO carregado');
+                    console.error('❌ JS não encontrado');
+                }
+                
+                // Atualizar a lista
+                debugInfo.innerHTML = status.map(item => `<li>${item}</li>`).join('');
+                console.log('📊 Debug completo:', status);
+            }, 2000);
+        });
+        
+        // Tentar criar manualmente se não funcionar
+        setTimeout(() => {
+            if (!document.querySelector('#colorblind-toggle')) {
+                console.log('🔧 Tentando criar toggle manualmente...');
+                if (window.colorblindAccessibility) {
+                    window.colorblindAccessibility.createToggle();
+                }
+            }
+        }, 3000);
+    </script>
+</body>
+</html>

@@ -1,0 +1,93 @@
+/**
+ * Estilos para o menu de Outras Ferramentas - Padrão Consistente
+ * Sistema de Controle de Forcing
+ */
+
+/* Dropdown de Ferramentas - Padrão Bootstrap */
+.nav-item.dropdown .dropdown-menu {
+    min-width: 220px;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.175);
+    border-radius: 0.375rem;
+}
+
+/* Item do Sistema de Relatórios - Estilo sutil */
+.dropdown-item[href*="devaxis.com.br"] {
+    color: #0d6efd;
+    position: relative;
+}
+
+.dropdown-item[href*="devaxis.com.br"]:hover {
+    background-color: rgba(13, 110, 253, 0.1);
+    color: #0d6efd;
+}
+
+.dropdown-item[href*="devaxis.com.br"] i {
+    color: #0d6efd;
+    margin-right: 8px;
+}
+
+/* Item "Mais Ferramentas" - Estilo sutil */
+.dropdown-item[onclick*="showComingSoon"] {
+    color: #198754;
+}
+
+.dropdown-item[onclick*="showComingSoon"]:hover {
+    background-color: rgba(25, 135, 84, 0.1);
+    color: #198754;
+}
+
+.dropdown-item[onclick*="showComingSoon"] i {
+    color: #198754;
+    margin-right: 8px;
+}
+
+/* Texto descritivo */
+.dropdown-item small {
+    font-size: 0.75rem;
+    color: #6c757d;
+    display: block;
+    margin-top: 2px;
+}
+
+/* Badge "Novo" no botão principal */
+#ferramentasDropdown .badge {
+    font-size: 0.6rem;
+    padding: 0.2em 0.4em;
+    position: absolute;
+    top: -2px;
+    right: -2px;
+}
+
+/* Botão "Outras Ferramentas" - Padrão Bootstrap */
+#ferramentasDropdown {
+    position: relative;
+}
+
+#ferramentasDropdown:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Dark mode - Ajustes simples */
+.dropdown-menu-dark {
+    background-color: #343a40;
+    border-color: rgba(255, 255, 255, 0.15);
+}
+
+.dropdown-menu-dark .dropdown-item {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.dropdown-menu-dark .dropdown-item:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #fff;
+}
+
+.dropdown-menu-dark .dropdown-item small {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+/* Divider no dark mode */
+.dropdown-menu-dark .dropdown-divider {
+    border-color: rgba(255, 255, 255, 0.15);
+}

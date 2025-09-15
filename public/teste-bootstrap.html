@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste Bootstrap - Sistema de Forcing</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-4">
+        <div class="alert alert-success">
+            <h4><i class="fas fa-check-circle"></i> Teste de Bootstrap</h4>
+            <p>Esta página testa se o Bootstrap está funcionando corretamente.</p>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h5>Testes de Funcionalidade Bootstrap</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6>1. Teste de Modal</h6>
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#testeModal">
+                            <i class="fas fa-window-restore"></i> Abrir Modal
+                        </button>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <h6>2. Teste de Dropdown</h6>
+                        <div class="dropdown">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                <i class="fas fa-cog"></i> Dropdown
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="#">Opção 1</a></li>
+                                <li><a class="dropdown-item" href="#">Opção 2</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <hr>
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6>3. Teste de Collapse</h6>
+                        <button class="btn btn-info" type="button" data-bs-toggle="collapse" data-bs-target="#testeCollapse">
+                            <i class="fas fa-chevron-down"></i> Toggle Collapse
+                        </button>
+                        <div class="collapse mt-2" id="testeCollapse">
+                            <div class="card card-body">
+                                Conteúdo do collapse funcionando!
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <h6>4. Teste de Toast</h6>
+                        <button type="button" class="btn btn-warning" onclick="mostrarToast()">
+                            <i class="fas fa-bell"></i> Mostrar Toast
+                        </button>
+                    </div>
+                </div>
+                
+                <hr>
+                
+                <div class="row">
+                    <div class="col-12">
+                        <h6>5. Teste de Navegação por Links</h6>
+                        <a href="/" class="btn btn-success me-2">
+                            <i class="fas fa-home"></i> Voltar ao Sistema
+                        </a>
+                        <a href="/forcing/terms" class="btn btn-primary me-2">
+                            <i class="fas fa-plus"></i> Novo Forcing
+                        </a>
+                        <button onclick="window.location.reload()" class="btn btn-outline-secondary">
+                            <i class="fas fa-sync-alt"></i> Recarregar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Teste -->
+    <div class="modal fade" id="testeModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Modal de Teste</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Se você está vendo este modal, o Bootstrap está funcionando corretamente!</p>
+                    <div class="alert alert-success">
+                        <i class="fas fa-check"></i> Bootstrap Modal funcionando!
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                    <button type="button" class="btn btn-primary">Salvar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div class="toast-container position-fixed top-0 end-0 p-3">
+        <div id="testeToast" class="toast" role="alert">
+            <div class="toast-header">
+                <i class="fas fa-info-circle text-primary me-2"></i>
+                <strong class="me-auto">Teste</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="toast"></button>
+            </div>
+            <div class="toast-body">
+                Toast funcionando perfeitamente!
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        function mostrarToast() {
+            const toastElement = document.getElementById('testeToast');
+            const toast = new bootstrap.Toast(toastElement);
+            toast.show();
+        }
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Bootstrap teste carregado');
+            console.log('Bootstrap disponível:', typeof bootstrap !== 'undefined');
+            
+            // Testar se todos os componentes estão disponíveis
+            const componentes = ['Modal', 'Toast', 'Collapse', 'Dropdown'];
+            componentes.forEach(comp => {
+                if (bootstrap[comp]) {
+                    console.log('✅', comp, 'disponível');
+                } else {
+                    console.error('❌', comp, 'não disponível');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
