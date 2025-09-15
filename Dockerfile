@@ -33,42 +33,40 @@ COPY --chown=www-data:www-data . /var/www
 # Install PHP dependencies
 RUN composer install --no-dev --optimize-autoloader
 
-# Create startup script (before changing user)
+# Create a simple startup script for debugging
 RUN echo '#!/bin/bash\n\
-# Create .env from environment variables (as root, then change ownership)\n\
-cat > /var/www/.env << EOF\n\
-APP_NAME=${APP_NAME:-Laravel}\n\
-APP_ENV=${APP_ENV:-production}\n\
-APP_DEBUG=${APP_DEBUG:-false}\n\
-APP_URL=${APP_URL:-http://localhost}\n\
-DB_CONNECTION=${DB_CONNECTION:-mysql}\n\
-DB_HOST=${DB_HOST:-127.0.0.1}\n\
-DB_PORT=${DB_PORT:-3306}\n\
-DB_DATABASE=${DB_DATABASE:-database}\n\
-DB_USERNAME=${DB_USERNAME:-root}\n\
-DB_PASSWORD=${DB_PASSWORD:-}\n\
-MAIL_MAILER=${MAIL_MAILER:-smtp}\n\
-MAIL_HOST=${MAIL_HOST:-localhost}\n\
-MAIL_PORT=${MAIL_PORT:-587}\n\
-MAIL_USERNAME=${MAIL_USERNAME:-}\n\
-MAIL_PASSWORD=${MAIL_PASSWORD:-}\n\
-MAIL_ENCRYPTION=${MAIL_ENCRYPTION:-tls}\n\
-MAIL_FROM_ADDRESS=${MAIL_FROM_ADDRESS:-hello@example.com}\n\
-MAIL_FROM_NAME=${MAIL_FROM_NAME:-Example}\n\
-CACHE_DRIVER=${CACHE_DRIVER:-file}\n\
-SESSION_DRIVER=${SESSION_DRIVER:-file}\n\
-QUEUE_CONNECTION=${QUEUE_CONNECTION:-sync}\n\
-EOF\n\
-# Change ownership to www-data\n\
+echo "=== DEBUGGING STARTUP ==="\n\
+echo "Current user: $(whoami)"\n\
+echo "Current directory: $(pwd)"\n\
+echo "Environment variables:"\n\
+env | grep -E "(APP_|DB_|MAIL_)" | head -10\n\
+echo "========================="\n\
+\n\
+# Copy .env.example to .env if it exists, or create basic .env\n\
+if [ -f /var/www/.env.example ]; then\n\
+    cp /var/www/.env.example /var/www/.env\n\
+else\n\
+    echo "APP_NAME=Laravel" > /var/www/.env\n\
+    echo "APP_ENV=production" >> /var/www/.env\n\
+    echo "APP_DEBUG=true" >> /var/www/.env\n\
+    echo "APP_KEY=" >> /var/www/.env\n\
+    echo "DB_CONNECTION=sqlite" >> /var/www/.env\n\
+    echo "DB_DATABASE=/var/www/database/database.sqlite" >> /var/www/.env\n\
+fi\n\
+\n\
+# Create database directory and file\n\
+mkdir -p /var/www/database\n\
+touch /var/www/database/database.sqlite\n\
+chown -R www-data:www-data /var/www/database\n\
 chown www-data:www-data /var/www/.env\n\
-# Switch to www-data user for Laravel commands\n\
-su -s /bin/bash www-data -c "cd /var/www && php artisan key:generate --force"\n\
-su -s /bin/bash www-data -c "cd /var/www && php artisan migrate --force"\n\
-su -s /bin/bash www-data -c "cd /var/www && php artisan config:cache"\n\
-su -s /bin/bash www-data -c "cd /var/www && php artisan route:cache"\n\
-su -s /bin/bash www-data -c "cd /var/www && php artisan view:cache"\n\
-# Start server as www-data\n\
-su -s /bin/bash www-data -c "cd /var/www && php artisan serve --host=0.0.0.0 --port=8080"' > /var/www/start.sh && chmod +x /var/www/start.sh
+\n\
+# Generate key and run basic setup\n\
+cd /var/www\n\
+php artisan key:generate --force || echo "Key generation failed"\n\
+php artisan migrate --force || echo "Migration failed"\n\
+\n\
+echo "=== STARTING SERVER ==="\n\
+php artisan serve --host=0.0.0.0 --port=8080' > /var/www/start.sh && chmod +x /var/www/start.sh
 
 # Change ownership of startup script
 RUN chown www-data:www-data /var/www/start.sh
